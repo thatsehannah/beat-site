@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Hero = () => {
+const DesktopHero = () => {
   const bgVideoRef = useRef<HTMLVideoElement | null>(null);
 
   useGSAP(() => {
@@ -68,7 +68,7 @@ const Hero = () => {
       />
       <div className='z-50 absolute top-[20%] left-36'>
         <p className='title text-6xl font-black opacity-0 uppercase'>
-          That's E. Hannah
+          That&apos;s E. Hannah
         </p>
         <p className='subtitle text-center text-xl mt-3 font-light opacity-0 uppercase'>
           Beat-making Hobbyist
@@ -88,4 +88,4 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+export default DesktopHero;
