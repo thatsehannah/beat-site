@@ -5,11 +5,16 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/all";
 import { Button } from "./ui/button";
+import { useMediaQuery } from "react-responsive";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const DesktopHero = () => {
+const Hero = () => {
   const bgVideoRef = useRef<HTMLVideoElement | null>(null);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
+  const maskSize = isMobile ? "86%" : "36%";
+  const maskPosition = isMobile ? "50% 8%" : "95% 50%";
 
   useGSAP(() => {
     const maskTimeLine = gsap.timeline({
@@ -25,8 +30,8 @@ const DesktopHero = () => {
     maskTimeLine
       .to(bgVideoRef.current, {
         scale: 1,
-        maskSize: "36%",
-        maskPosition: "95% 50%",
+        maskSize: maskSize,
+        maskPosition: maskPosition,
         duration: 8,
         ease: "power1.inOut",
       })
@@ -66,19 +71,19 @@ const DesktopHero = () => {
         preload='metadata'
         playsInline
       />
-      <div className='z-50 absolute top-[20%] left-36'>
-        <p className='title text-6xl font-black opacity-0 uppercase'>
+      <div className='absolute z-50 xl:top-[20%] bottom-[14%] xl:left-36 w-full xl:w-auto'>
+        <p className='title xl:text-6xl text-4xl font-black opacity-0 uppercase text-center xl:text-left'>
           That&apos;s E. Hannah
         </p>
-        <p className='subtitle text-center text-xl mt-3 font-light opacity-0 uppercase'>
+        <p className='subtitle text-center xl:text-left xl:text-xl text-lg mt-3 font-light opacity-0 uppercase'>
           Beat-making Hobbyist
         </p>
-        <div className='call-to-action flex justify-center items-center mt-20 opacity-0'>
+        <div className='call-to-action flex justify-center items-center xl:mt-20 mt-13 opacity-0'>
           <Button
-            className='p-8 cursor-pointer hover:scale-110 ease-in-out transition-all duration-500'
+            className='xl:p-8 p-6 cursor-pointer hover:scale-110 ease-in-out transition-all duration-500'
             size='lg'
           >
-            <p className='text-xl'>
+            <p className='xl:text-xl text-lg font-bold'>
               LISTEN TO MY BEATS <span className='animate-pulse'>👇🏾</span>
             </p>
           </Button>
@@ -88,4 +93,4 @@ const DesktopHero = () => {
   );
 };
 
-export default DesktopHero;
+export default Hero;
