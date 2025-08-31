@@ -22,8 +22,12 @@ const Hero = () => {
         trigger: ".hero",
         start: "top top",
         end: "bottom center",
-        scrub: 8,
+        scrub: 1,
         pin: true,
+        pinSpacing: true,
+        anticipatePin: 2,
+        invalidateOnRefresh: true,
+        fastScrollEnd: false,
       },
     });
 
@@ -38,7 +42,7 @@ const Hero = () => {
       .to(".title", {
         opacity: 1,
         duration: 2.2,
-        ease: "expo.out",
+        ease: "power1.inOut",
       })
       .fromTo(
         ".subtitle",
@@ -49,7 +53,7 @@ const Hero = () => {
           opacity: 1,
           yPercent: 0,
           duration: 4,
-          ease: "expo.out",
+          ease: "power1.inOut",
         }
       )
       .to(".call-to-action", {
@@ -57,10 +61,10 @@ const Hero = () => {
         ease: "expo.out",
         duration: 4,
       });
-  }, []);
+  });
 
   return (
-    <div className='w-screen h-screen relative hero'>
+    <section className='w-screen h-screen relative hero'>
       <video
         ref={bgVideoRef}
         src='/videos/hero-bg.mp4'
@@ -89,7 +93,7 @@ const Hero = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
