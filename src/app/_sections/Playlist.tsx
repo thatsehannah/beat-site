@@ -3,6 +3,7 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useGSAP } from "@gsap/react";
+import MusicPlayer from "@/components/MusicPlayer";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,6 +43,9 @@ const Playlist = () => {
             hear and want to work with me, I&apos;d be happy to connect. My
             email is <span>elliotchannah@outlook.com</span>
           </p>
+        </div>
+        <div className='my-auto mx-auto'>
+          <MusicPlayer />
         </div>
       </div>
     </section>

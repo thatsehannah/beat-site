@@ -1,5 +1,5 @@
-import Hero from "@/components/Hero";
-import Playlist from "@/components/Playlist";
+import Hero from "@/app/_sections/Hero";
+import Playlist from "@/app/_sections/Playlist";
 
 export default function Home() {
   return (
