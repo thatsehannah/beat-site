@@ -25,9 +25,6 @@ const Hero = () => {
         scrub: 1,
         pin: true,
         pinSpacing: true,
-        anticipatePin: 2,
-        invalidateOnRefresh: true,
-        fastScrollEnd: false,
       },
     });
 
@@ -64,7 +61,7 @@ const Hero = () => {
   });
 
   return (
-    <section className='w-screen h-screen relative hero'>
+    <section className='w-screen h-screen relative hero bg-background'>
       <video
         ref={bgVideoRef}
         src='/videos/hero-bg.mp4'
