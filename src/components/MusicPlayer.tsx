@@ -1,20 +1,22 @@
 "use client";
 
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Rewind } from "lucide-react";
+import { Track } from "@/lib/types";
 
-const MusicPlayer = () => {
+type MusicPlayerProps = {
+  track: Track;
+  onNextTrack: () => void;
+  onPrevTrack: () => void;
+};
+
+const MusicPlayer = ({ track, onNextTrack, onPrevTrack }: MusicPlayerProps) => {
+  const { src, title } = track;
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [background, setBackground] = useState("bg-primary");
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -41,6 +43,16 @@ const MusicPlayer = () => {
     }
   };
 
+  const handleNextTrack = () => {
+    setIsPlaying(false);
+    onNextTrack();
+  };
+
+  const handlePrevTrack = () => {
+    setIsPlaying(false);
+    onPrevTrack();
+  };
+
   const handlePlayPause = () => {
     if (isPlaying) {
       setIsPlaying(false);
@@ -51,35 +63,44 @@ const MusicPlayer = () => {
     }
   };
 
-  //This useEffect will listen for 'timeupdate' events
+  //This useEffect will listen for 'timeupdate' & 'loadedmetadata' events
   useEffect(() => {
-    audioRef.current?.addEventListener("timeupdate", handleTimeUpdate);
+    const audio = audioRef.current;
 
-    return () =>
-      audioRef.current?.removeEventListener("timeupdate", handleTimeUpdate);
+    if (audio) {
+      audio.addEventListener("timeupdate", handleTimeUpdate);
+
+      return () => {
+        audio.removeEventListener("timeupdate", handleTimeUpdate);
+      };
+    }
   }, []);
 
   return (
     <div className='bg-background p-4 w-80 rounded-xl text-foreground'>
-      <p className='font-semibold mb-4'>Not Ready</p>
+      <p className='font-semibold mb-4'>{title}</p>
       <input
         type='range'
         min={0}
-        max={duration}
+        max={duration || 0}
         value={currentTime}
         onChange={handleSeek}
         className='w-full h-[5px] accent-accent'
       />
       <audio
         ref={audioRef}
-        src='/audio/not-ready copy.mp3'
+        src={src}
+        preload='metadata'
       />
       <div className='flex items-center justify-between mt-2 text-sm'>
         <p>{formatDuration(currentTime)}</p>
-        <p>{formatDuration(duration)}</p>
+        <p>{formatDuration(duration || 0)}</p>
       </div>
       <div className='flex items-center justify-around mt-8'>
-        <Button className='text-accent-foreground bg-accent'>
+        <Button
+          className='text-accent-foreground bg-accent'
+          onClick={handlePrevTrack}
+        >
           <Rewind />
         </Button>
         <Button
@@ -88,7 +109,10 @@ const MusicPlayer = () => {
         >
           {isPlaying ? <Pause /> : <Play />}
         </Button>
-        <Button className='text-accent-foreground bg-accent'>
+        <Button
+          className='text-accent-foreground bg-accent'
+          onClick={handleNextTrack}
+        >
           <FastForward />
         </Button>
       </div>
