@@ -19,6 +19,7 @@ const Playlist = () => {
   const [state, dispatch] = useReducer(musicPlayerReducer, initialState);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [currentTrack, setCurrentTrack] = useState<Track>(playlist[0]);
+  const bgVideoRef = useRef<HTMLVideoElement>(null);
 
   const handleNextTrack = () => {
     dispatch({ type: "seeked" });
@@ -79,33 +80,33 @@ const Playlist = () => {
   useEffect(() => {
     if (state.seeked && state.isPlaying) {
       dispatch({ type: "reset" });
-      console.log("seek animation playing...");
       playAnimRef.current?.restart(true);
     } else if (state.isPlaying) {
-      playAnimRef.current?.play();
+      bgVideoRef.current?.play().then(() => playAnimRef.current?.play());
     } else {
-      console.log("pause animation playing...");
-      playAnimRef.current?.reverse();
+      playAnimRef.current?.reverse().then(() => bgVideoRef.current?.pause());
     }
   }, [state.isPlaying, state.seeked]);
 
   return (
-    <section className='disclaimer h-screen w-screen bg-primary bg-[url("/images/noise.png")] p-4 size-full text-accent-foreground z-20'>
-      <div className='h-full w-full border-background rounded-2xl border-2 flex items-center flex-col z-30 relative overflow-hidden'>
-        <div className='w-full h-full absolute -z-10 brightness-[0.25] vid-bg opacity-0'>
-          <video
-            src={playlist[currentTrackIndex].video}
-            muted
-            loop
-            autoPlay
-            className='w-full h-full object-fill'
-          />
-        </div>
-        <div className='disclaimer-text border-accent text-center max-w-[50%] flex flex-col items-center gap-5'>
-          <p className='text-7xl uppercase font-black text-accent'>
+    <section className='disclaimer h-screen w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'>
+      <div className='w-full h-full absolute -z-10 brightness-[0.35] vid-bg opacity-0 lg:mask-x-from-75% mask-y-from-75% lg:mask-x-to-90% mask-y-to-90%'>
+        <video
+          src={playlist[currentTrackIndex].video}
+          muted
+          loop
+          autoPlay
+          ref={bgVideoRef}
+          className='w-full h-full object-cover inset-0 '
+        />
+        <div className="absolute inset-0 bg-[url('/images/noise.png')] mix-blend-overlay pointer-events-none" />
+      </div>
+      <div className='h-full w-full rounded-2xl flex items-center flex-col z-30 overflow-hidden'>
+        <div className='disclaimer-text border-accent text-center lg:max-w-[50%] flex flex-col lg:items-center gap-5 p-6 lg:p-2'>
+          <p className='lg:text-7xl text-5xl uppercase font-black text-accent'>
             Disclaimer!
           </p>
-          <p className='text-lg font-semibold'>
+          <p className='lg:text-lg text-[1rem] font-semibold text-left'>
             The samples I used have{" "}
             <span className='text-2xl font-extrabold'>NOT</span> been cleared. I
             am not looking to sell these beats; it is strictly for promotional
