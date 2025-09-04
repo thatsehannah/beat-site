@@ -90,7 +90,7 @@ const Playlist = () => {
 
   return (
     <section className='disclaimer h-screen w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'>
-      <div className='w-full h-full absolute -z-10 brightness-[0.35] vid-bg opacity-0 lg:mask-x-from-75% mask-y-from-75% lg:mask-x-to-90% mask-y-to-90%'>
+      <div className='w-full h-full absolute -z-10 brightness-[0.35] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-75% lg:mask-x-to-90% lg:mask-y-from-100% lg:mask-y-to-100% '>
         <video
           src={playlist[currentTrackIndex].video}
           muted
@@ -102,7 +102,7 @@ const Playlist = () => {
         <div className="absolute inset-0 bg-[url('/images/noise.png')] mix-blend-overlay pointer-events-none" />
       </div>
       <div className='h-full w-full rounded-2xl flex items-center flex-col z-30 overflow-hidden'>
-        <div className='disclaimer-text border-accent text-center lg:max-w-[50%] flex flex-col lg:items-center gap-5 p-6 lg:p-2'>
+        <div className='disclaimer-text border-accent text-center lg:max-w-[50%] flex flex-col lg:items-center gap-5 p-6 lg:p-16'>
           <p className='lg:text-7xl text-5xl uppercase font-black text-accent'>
             Disclaimer!
           </p>
@@ -112,7 +112,7 @@ const Playlist = () => {
             am not looking to sell these beats; it is strictly for promotional
             purposes and to showcase my favorite hobby. If you like what you
             hear and want to work with me, I&apos;d be happy to connect. My
-            email is <span>elliotchannah@outlook.com</span>
+            email is <span>elliotchannah@outlook.com.</span>
           </p>
         </div>
         <div className='my-auto mx-auto'>
