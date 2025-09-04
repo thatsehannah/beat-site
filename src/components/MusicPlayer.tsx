@@ -54,12 +54,12 @@ const MusicPlayer = ({
   };
 
   const handleNextTrack = () => {
-    onPause();
+    // onPause();
     onNextTrack();
   };
 
   const handlePrevTrack = () => {
-    onPause();
+    // onPause();
     onPrevTrack();
   };
 
@@ -85,6 +85,19 @@ const MusicPlayer = ({
       };
     }
   }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    // If a new track loads and state says "playing", start it automatically
+    if (audio) {
+      if (state.isPlaying) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+  }, [track, state.isPlaying]);
 
   return (
     <div className='bg-background p-4 w-80 rounded-xl text-foreground'>

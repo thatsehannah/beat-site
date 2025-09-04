@@ -5,13 +5,13 @@ import { ScrollTrigger } from "gsap/all";
 import { useGSAP } from "@gsap/react";
 import MusicPlayer from "@/components/MusicPlayer";
 import { mockPlaylist } from "@/lib/mockPlaylist";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { Track } from "@/lib/types";
 import { musicPlayerReducer, type State } from "@/lib/reducer";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const initialState: State = { isPlaying: false };
+const initialState: State = { isPlaying: false, seeked: false };
 
 const Playlist = () => {
   const playlist = mockPlaylist;
@@ -21,12 +21,14 @@ const Playlist = () => {
   const [currentTrack, setCurrentTrack] = useState<Track>(playlist[0]);
 
   const handleNextTrack = () => {
+    dispatch({ type: "seeked" });
     setCurrentTrackIndex((curr) =>
       curr + 1 <= playlist.length - 1 ? curr + 1 : 0
     );
   };
 
   const handlePrevTrack = () => {
+    dispatch({ type: "seeked" });
     setCurrentTrackIndex((curr) => (curr - 1 > 0 ? curr - 1 : 0));
   };
 
@@ -62,32 +64,35 @@ const Playlist = () => {
     setCurrentTrack(playlist[currentTrackIndex]);
   }, [currentTrackIndex, playlist]);
 
+  const playAnimRef = useRef<gsap.core.Tween>(null);
+
   useGSAP(() => {
-    const bgPlayAnimation = gsap.to(".vid-bg", {
+    playAnimRef.current = gsap.to(".vid-bg", {
       opacity: 1,
       duration: 1.2,
       ease: "power2.inOut",
+      delay: 0.7,
       paused: true,
     });
+  }, []);
 
-    const bgPauseAnimation = gsap.to(".vid-bg", {
-      opacity: 0,
-      duration: 1.2,
-      ease: "power2.inOut",
-      paused: true,
-    });
-
-    if (state.isPlaying) {
-      bgPlayAnimation.play();
+  useEffect(() => {
+    if (state.seeked && state.isPlaying) {
+      dispatch({ type: "reset" });
+      console.log("seek animation playing...");
+      playAnimRef.current?.restart(true);
+    } else if (state.isPlaying) {
+      playAnimRef.current?.play();
     } else {
-      bgPauseAnimation.play();
+      console.log("pause animation playing...");
+      playAnimRef.current?.reverse();
     }
-  }, [state.isPlaying]);
+  }, [state.isPlaying, state.seeked]);
 
   return (
     <section className='disclaimer h-screen w-screen bg-primary bg-[url("/images/noise.png")] p-4 size-full text-accent-foreground z-20'>
       <div className='h-full w-full border-background rounded-2xl border-2 flex items-center flex-col z-30 relative overflow-hidden'>
-        <div className='w-full h-full absolute -z-10 brightness-[0.25] vid-bg'>
+        <div className='w-full h-full absolute -z-10 brightness-[0.25] vid-bg opacity-0'>
           <video
             src={playlist[currentTrackIndex].video}
             muted
