@@ -4,17 +4,27 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Rewind } from "lucide-react";
 import { Track } from "@/lib/types";
+import { State } from "@/lib/reducer";
 
 type MusicPlayerProps = {
   track: Track;
+  state: State;
+  onPlay: () => void;
+  onPause: () => void;
   onNextTrack: () => void;
   onPrevTrack: () => void;
 };
 
-const MusicPlayer = ({ track, onNextTrack, onPrevTrack }: MusicPlayerProps) => {
+const MusicPlayer = ({
+  track,
+  state,
+  onPlay,
+  onPause,
+  onNextTrack,
+  onPrevTrack,
+}: MusicPlayerProps) => {
   const { src, title } = track;
 
-  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
@@ -44,21 +54,21 @@ const MusicPlayer = ({ track, onNextTrack, onPrevTrack }: MusicPlayerProps) => {
   };
 
   const handleNextTrack = () => {
-    setIsPlaying(false);
+    onPause();
     onNextTrack();
   };
 
   const handlePrevTrack = () => {
-    setIsPlaying(false);
+    onPause();
     onPrevTrack();
   };
 
   const handlePlayPause = () => {
-    if (isPlaying) {
-      setIsPlaying(false);
+    if (state.isPlaying) {
+      onPause();
       audioRef.current?.pause();
     } else {
-      setIsPlaying(true);
+      onPlay();
       audioRef.current?.play();
     }
   };
@@ -107,7 +117,7 @@ const MusicPlayer = ({ track, onNextTrack, onPrevTrack }: MusicPlayerProps) => {
           className='text-accent-foreground bg-accent'
           onClick={handlePlayPause}
         >
-          {isPlaying ? <Pause /> : <Play />}
+          {state.isPlaying ? <Pause /> : <Play />}
         </Button>
         <Button
           className='text-accent-foreground bg-accent'
