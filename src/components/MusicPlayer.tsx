@@ -99,6 +99,12 @@ const MusicPlayer = ({
     }
   }, [track, state.isPlaying]);
 
+  useEffect(() => {
+    if (currentTime === duration) {
+      onPause();
+    }
+  }, [currentTime, duration]);
+
   return (
     <div className='bg-background p-4 w-80 rounded-xl text-foreground'>
       <p className='font-semibold mb-4'>{title}</p>
