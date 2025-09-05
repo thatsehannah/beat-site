@@ -1,27 +1,23 @@
 "use client";
 
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, Dispatch, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Rewind } from "lucide-react";
 import { Track } from "@/lib/types";
-import { State } from "@/lib/reducer";
+import { Action, State } from "@/lib/reducer";
 
 type MusicPlayerProps = {
   track: Track;
+  playlistLength: number;
   state: State;
-  onPlay: () => void;
-  onPause: () => void;
-  onNextTrack: () => void;
-  onPrevTrack: () => void;
+  dispatch: Dispatch<Action>;
 };
 
 const MusicPlayer = ({
   track,
+  playlistLength,
   state,
-  onPlay,
-  onPause,
-  onNextTrack,
-  onPrevTrack,
+  dispatch,
 }: MusicPlayerProps) => {
   const { src, title } = track;
 
@@ -54,26 +50,24 @@ const MusicPlayer = ({
   };
 
   const handleNextTrack = () => {
-    // onPause();
-    onNextTrack();
+    dispatch({ type: "nextTrack", payload: { playlistLength } });
   };
 
   const handlePrevTrack = () => {
-    // onPause();
-    onPrevTrack();
+    dispatch({ type: "prevTrack" });
   };
 
   const handlePlayPause = () => {
     if (state.isPlaying) {
-      onPause();
+      dispatch({ type: "pause" });
       audioRef.current?.pause();
     } else {
-      onPlay();
+      dispatch({ type: "play" });
       audioRef.current?.play();
     }
   };
 
-  //This useEffect will listen for 'timeupdate' & 'loadedmetadata' events
+  //This useEffect will listen for 'timeupdate' events
   useEffect(() => {
     const audio = audioRef.current;
 
@@ -86,10 +80,10 @@ const MusicPlayer = ({
     }
   }, []);
 
+  // If a new track loads and "isPlaying" is still true, start it automatically
   useEffect(() => {
     const audio = audioRef.current;
 
-    // If a new track loads and state says "playing", start it automatically
     if (audio) {
       if (state.isPlaying) {
         audio.play();
@@ -99,11 +93,12 @@ const MusicPlayer = ({
     }
   }, [track, state.isPlaying]);
 
+  //this useEffect
   useEffect(() => {
     if (currentTime === duration) {
-      onPause();
+      dispatch({ type: "pause" });
     }
-  }, [currentTime, duration]);
+  }, [currentTime, duration, dispatch]);
 
   return (
     <div

@@ -4,42 +4,21 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useGSAP } from "@gsap/react";
 import MusicPlayer from "@/components/MusicPlayer";
-import { mockPlaylist } from "@/lib/mockPlaylist";
-import { useEffect, useReducer, useRef, useState } from "react";
+import { Dispatch, useEffect, useRef, useState } from "react";
 import { Track } from "@/lib/types";
-import { musicPlayerReducer, type State } from "@/lib/reducer";
+import { type Action, type State } from "@/lib/reducer";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const initialState: State = { isPlaying: false, seeked: false };
+type PlaylistProps = {
+  playlist: Track[];
+  state: State;
+  dispatch: Dispatch<Action>;
+};
 
-const Playlist = () => {
-  const playlist = mockPlaylist;
-
-  const [state, dispatch] = useReducer(musicPlayerReducer, initialState);
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+const Playlist = ({ playlist, state, dispatch }: PlaylistProps) => {
   const [currentTrack, setCurrentTrack] = useState<Track>(playlist[0]);
   const bgVideoRef = useRef<HTMLVideoElement>(null);
-
-  const handleNextTrack = () => {
-    dispatch({ type: "seeked" });
-    setCurrentTrackIndex((curr) =>
-      curr + 1 <= playlist.length - 1 ? curr + 1 : 0
-    );
-  };
-
-  const handlePrevTrack = () => {
-    dispatch({ type: "seeked" });
-    setCurrentTrackIndex((curr) => (curr - 1 > 0 ? curr - 1 : 0));
-  };
-
-  const handlePlay = () => {
-    dispatch({ type: "play" });
-  };
-
-  const handlePause = () => {
-    dispatch({ type: "pause" });
-  };
 
   useGSAP(() => {
     const disclaimerTl = gsap.timeline({
@@ -70,8 +49,8 @@ const Playlist = () => {
   }, []);
 
   useEffect(() => {
-    setCurrentTrack(playlist[currentTrackIndex]);
-  }, [currentTrackIndex, playlist]);
+    setCurrentTrack(playlist[state.currentIndex]);
+  }, [state.currentIndex, playlist]);
 
   const playAnimRef = useRef<gsap.core.Tween>(null);
 
@@ -94,13 +73,16 @@ const Playlist = () => {
     } else {
       playAnimRef.current?.reverse().then(() => bgVideoRef.current?.pause());
     }
-  }, [state.isPlaying, state.seeked]);
+  }, [state.isPlaying, state.seeked, dispatch]);
 
   return (
-    <section className='disclaimer h-screen w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'>
+    <section
+      id='playlist'
+      className='disclaimer h-screen w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'
+    >
       <div className='w-full h-full absolute -z-10 brightness-[0.35] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-75% lg:mask-x-to-90% lg:mask-y-from-100% lg:mask-y-to-100% '>
         <video
-          src={playlist[currentTrackIndex].video}
+          src={playlist[state.currentIndex].video}
           muted
           loop
           autoPlay
@@ -126,11 +108,9 @@ const Playlist = () => {
         <div className='my-auto mx-auto music-player'>
           <MusicPlayer
             track={currentTrack}
+            playlistLength={playlist.length}
             state={state}
-            onPlay={handlePlay}
-            onPause={handlePause}
-            onNextTrack={handleNextTrack}
-            onPrevTrack={handlePrevTrack}
+            dispatch={dispatch}
           />
         </div>
       </div>

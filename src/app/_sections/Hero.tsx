@@ -3,11 +3,11 @@
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/all";
+import { ScrollToPlugin, ScrollTrigger } from "gsap/all";
 import { Button } from "../../components/ui/button";
 import { useMediaQuery } from "react-responsive";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const Hero = () => {
   const bgVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -60,6 +60,14 @@ const Hero = () => {
       });
   });
 
+  const scrollToPlaylist = () => {
+    gsap.to(window, {
+      duration: 2,
+      scrollTo: "#playlist",
+      ease: "power2.inOut",
+    });
+  };
+
   return (
     <section className='w-screen h-screen relative hero bg-background'>
       <video
@@ -83,6 +91,7 @@ const Hero = () => {
           <Button
             className='xl:p-8 p-6 cursor-pointer hover:scale-110 ease-in-out transition-all duration-500'
             size='lg'
+            onClick={scrollToPlaylist}
           >
             <p className='xl:text-xl text-lg font-bold'>
               LISTEN TO MY BEATS <span className='animate-pulse'>👇🏾</span>
