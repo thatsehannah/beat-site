@@ -50,15 +50,23 @@ const Playlist = () => {
       },
     });
 
-    disclaimerTl.fromTo(
-      ".disclaimer-text",
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 1.2,
-        ease: "power2.inOut",
-      }
-    );
+    disclaimerTl
+      .fromTo(
+        ".disclaimer-text",
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 1.2,
+          ease: "power2.inOut",
+        }
+      )
+      .fromTo(
+        ".music-player",
+        {
+          opacity: 0,
+        },
+        { opacity: 1, duration: 1.2, ease: "power2.inOut" }
+      );
   }, []);
 
   useEffect(() => {
@@ -103,7 +111,7 @@ const Playlist = () => {
       </div>
       <div className='h-full w-full rounded-2xl flex items-center flex-col z-30 overflow-hidden'>
         <div className='disclaimer-text border-accent text-center lg:max-w-[50%] flex flex-col lg:items-center gap-5 p-6 lg:p-16'>
-          <p className='lg:text-7xl text-5xl uppercase font-black text-accent'>
+          <p className='lg:text-7xl text-5xl uppercase font-black text-accent text-shadow-lg'>
             Disclaimer!
           </p>
           <p className='lg:text-lg text-[1rem] font-semibold text-left'>
@@ -115,7 +123,7 @@ const Playlist = () => {
             email is <span>elliotchannah@outlook.com.</span>
           </p>
         </div>
-        <div className='my-auto mx-auto'>
+        <div className='my-auto mx-auto music-player'>
           <MusicPlayer
             track={currentTrack}
             state={state}

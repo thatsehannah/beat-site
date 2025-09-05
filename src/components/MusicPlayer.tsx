@@ -106,7 +106,11 @@ const MusicPlayer = ({
   }, [currentTime, duration]);
 
   return (
-    <div className='bg-background p-4 w-80 rounded-xl text-foreground'>
+    <div
+      className={`bg-background p-4 w-80 rounded-xl text-foreground shadow-2xl ${
+        state.isPlaying ? "shadow-none" : "shadow-white"
+      } transition-all ease-in-out duration-700 delay-700`}
+    >
       <p className='font-semibold mb-4'>{title}</p>
       <input
         type='range'
