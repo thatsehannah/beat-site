@@ -54,7 +54,7 @@ const MiniMusicPlayer = ({
 
   return (
     <div
-      className={`rounded-full p-4 bg-primary/50 bg-[url("/images/noise.png")] fixed right-0 top-5 z-50 w-72 shadow-2xl ${
+      className={`rounded-full lg:p-4 p-3 bg-primary/50 bg-[url("/images/noise.png")] fixed right-0 top-5 z-50 lg:w-72 w-56 shadow-2xl ${
         isVisible ? "opacity-100 right-6" : "opacity-0 -right-6"
       } transition-all ease-in-out duration-500`}
     >
