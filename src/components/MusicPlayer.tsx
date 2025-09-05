@@ -5,6 +5,9 @@ import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Rewind } from "lucide-react";
 import { Track } from "@/lib/types";
 import { Action, State } from "@/lib/reducer";
+import gsap from "gsap";
+
+//TODO: Note to self: figure out if i need to move the current track state logic out of playlist component and move it here so changing the track via the playlist can be done here. (think that makes sense, but need to think more)
 
 type MusicPlayerProps = {
   track: Track;
@@ -23,6 +26,7 @@ const MusicPlayer = ({
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [showPlaylist, setShowPlaylist] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -67,6 +71,16 @@ const MusicPlayer = ({
     }
   };
 
+  const toggleFlip = () => {
+    setShowPlaylist((prevState) => !prevState);
+
+    gsap.to(".player-card", {
+      rotateY: showPlaylist ? 0 : 180,
+      ease: "power2.inOut",
+      duration: 0.4,
+    });
+  };
+
   //This useEffect will listen for 'timeupdate' events
   useEffect(() => {
     const audio = audioRef.current;
@@ -102,47 +116,62 @@ const MusicPlayer = ({
 
   return (
     <div
-      className={`bg-background p-4 w-80 rounded-xl text-foreground shadow-2xl ${
+      className={`relative bg-background w-96 h-48 rounded-xl text-foreground shadow-2xl ${
         state.isPlaying ? "shadow-none" : "shadow-white"
-      } transition-all ease-in-out duration-700 delay-700`}
+      } ease-in-out duration-700 player-card perspective-distant transform-3d`}
     >
-      <p className='font-semibold mb-4'>{title}</p>
-      <input
-        type='range'
-        min={0}
-        max={duration || 0}
-        value={currentTime}
-        onChange={handleSeek}
-        className='w-full h-[5px] accent-accent'
-      />
-      <audio
-        ref={audioRef}
-        src={src}
-        preload='metadata'
-      />
-      <div className='flex items-center justify-between mt-2 text-sm'>
-        <p>{formatDuration(currentTime)}</p>
-        <p>{formatDuration(duration || 0)}</p>
+      {/* front of music player */}
+      <div className='absolute w-full h-full backface-hidden p-4'>
+        <p
+          className='font-semibold mb-4 hover:cursor-pointer'
+          onClick={toggleFlip}
+        >
+          {title}
+        </p>
+        <input
+          type='range'
+          min={0}
+          max={duration || 0}
+          value={currentTime}
+          onChange={handleSeek}
+          className='w-full h-[5px] accent-accent'
+        />
+        <audio
+          ref={audioRef}
+          src={src}
+          preload='metadata'
+        />
+        <div className='flex items-center justify-between mt-2 text-sm'>
+          <p>{formatDuration(currentTime)}</p>
+          <p>{formatDuration(duration || 0)}</p>
+        </div>
+        <div className='flex items-center justify-around mt-8'>
+          <Button
+            className='text-accent-foreground bg-accent'
+            onClick={handlePrevTrack}
+          >
+            <Rewind />
+          </Button>
+          <Button
+            className='text-accent-foreground bg-accent'
+            onClick={handlePlayPause}
+          >
+            {state.isPlaying ? <Pause /> : <Play />}
+          </Button>
+          <Button
+            className='text-accent-foreground bg-accent'
+            onClick={handleNextTrack}
+          >
+            <FastForward />
+          </Button>
+        </div>
       </div>
-      <div className='flex items-center justify-around mt-8'>
-        <Button
-          className='text-accent-foreground bg-accent'
-          onClick={handlePrevTrack}
-        >
-          <Rewind />
-        </Button>
-        <Button
-          className='text-accent-foreground bg-accent'
-          onClick={handlePlayPause}
-        >
-          {state.isPlaying ? <Pause /> : <Play />}
-        </Button>
-        <Button
-          className='text-accent-foreground bg-accent'
-          onClick={handleNextTrack}
-        >
-          <FastForward />
-        </Button>
+      {/* back of music player */}
+      <div className='bg-amber-200 absolute w-full h-full backface-hidden rotate-y-180'>
+        <p onClick={toggleFlip}>
+          Back of card that will show a list of all of the beats available to
+          play
+        </p>
       </div>
     </div>
   );
