@@ -1,8 +1,21 @@
-import { createContext, ReactNode, useContext, useReducer } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  useContext,
+  useReducer,
+} from "react";
 import { mockPlaylist } from "./mockPlaylist";
-import { playlistReducer, State } from "./reducer";
+import { Action, playlistReducer, State } from "./reducer";
 
-const PlaylistContext = createContext<any>(null);
+type PlaylistContextType = {
+  state: State;
+  dispatch: Dispatch<Action>;
+};
+
+const PlaylistContext = createContext<PlaylistContextType | undefined>(
+  undefined
+);
 
 const initialState: State = {
   isPlaying: false,
@@ -21,4 +34,10 @@ export const PlaylistProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const usePlaylist = () => useContext(PlaylistContext);
+export const usePlaylist = () => {
+  const context = useContext(PlaylistContext);
+  if (!context) {
+    throw new Error("usePlaylist must be used within a PlaylistProvider");
+  }
+  return context;
+};

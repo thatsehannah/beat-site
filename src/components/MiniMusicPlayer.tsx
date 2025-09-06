@@ -50,21 +50,29 @@ const MiniMusicPlayer = () => {
         isVisible ? "opacity-100 right-6" : "opacity-0 -right-6"
       } transition-all ease-in-out duration-500`}
     >
+      <div className='mb-2'>
+        <p className='text-sm text-white text-center'>
+          Now Playing:{" "}
+          <span className='font-bold'>
+            {state.playlist[state.currentIndex].title}
+          </span>
+        </p>
+      </div>
       <div className='flex items-center justify-around'>
         <Button
-          className='text-accent-foreground bg-accent'
+          className='text-accent-foreground bg-accent cursor-pointer'
           onClick={handlePrevTrack}
         >
           <Rewind />
         </Button>
         <Button
-          className='text-accent-foreground bg-accent'
+          className='text-accent-foreground bg-accent cursor-pointer'
           onClick={handlePlayPause}
         >
           {state.isPlaying ? <Pause /> : <Play />}
         </Button>
         <Button
-          className='text-accent-foreground bg-accent'
+          className='text-accent-foreground bg-accent cursor-pointer'
           onClick={handleNextTrack}
         >
           <FastForward />

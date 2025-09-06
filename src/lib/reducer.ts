@@ -11,6 +11,7 @@ export type Action =
   | { type: "play" }
   | { type: "pause" }
   | { type: "seeked" }
+  | { type: "selectTrack"; payload: { index: number } }
   | { type: "nextTrack"; payload: { playlist: Track[] } }
   | { type: "prevTrack"; payload: { playlist: Track[] } }
   | { type: "reset" };
@@ -44,6 +45,12 @@ export const playlistReducer = (state: State, action: Action): State => {
       return {
         ...state,
         currentIndex: state.currentIndex - 1 > 0 ? state.currentIndex - 1 : 0,
+      };
+    }
+    case "selectTrack": {
+      return {
+        ...state,
+        currentIndex: action.payload.index,
       };
     }
     case "reset":

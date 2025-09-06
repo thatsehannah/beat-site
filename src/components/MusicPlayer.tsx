@@ -1,27 +1,24 @@
 "use client";
 
-import { ChangeEvent, Dispatch, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
-import { FastForward, Pause, Play, Rewind } from "lucide-react";
-import { Action, State } from "@/lib/reducer";
+import { FastForward, Pause, Play, Redo2, Rewind } from "lucide-react";
 import gsap from "gsap";
+import { usePlaylist } from "@/lib/context";
+import { Track } from "@/lib/types";
 
 //TODO: Note to self: figure out if i need to move the current track state logic out of playlist component and move it here so changing the track via the playlist can be done here. (think that makes sense, but need to think more)
 
-type MusicPlayerProps = {
-  state: State;
-  dispatch: Dispatch<Action>;
-};
-
-const MusicPlayer = ({ state, dispatch }: MusicPlayerProps) => {
+const MusicPlayer = () => {
+  const { state, dispatch } = usePlaylist();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showPlaylist, setShowPlaylist] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const playlist = state.playlist;
-  const currentTrack = playlist[state.currentIndex];
+  const playlist: Track[] = state.playlist;
+  const currentTrack: Track = playlist[state.currentIndex];
 
   const formatDuration = (input: number) => {
     const minutes = Math.floor(input / 60);
@@ -74,7 +71,7 @@ const MusicPlayer = ({ state, dispatch }: MusicPlayerProps) => {
     });
   };
 
-  //This useEffect will listen for 'timeupdate' events
+  //this useEffect will listen for 'timeupdate' events
   useEffect(() => {
     const audio = audioRef.current;
 
@@ -87,7 +84,7 @@ const MusicPlayer = ({ state, dispatch }: MusicPlayerProps) => {
     }
   }, []);
 
-  // If a new track loads and "isPlaying" is still true, start it automatically
+  //if a new track loads and "isPlaying" is still true, start it automatically
   useEffect(() => {
     const audio = audioRef.current;
 
@@ -100,7 +97,7 @@ const MusicPlayer = ({ state, dispatch }: MusicPlayerProps) => {
     }
   }, [currentTrack, state.isPlaying]);
 
-  //this useEffect
+  //this useEffect pauses the beat when the song ends
   useEffect(() => {
     if (currentTime === duration) {
       dispatch({ type: "pause" });
@@ -116,7 +113,7 @@ const MusicPlayer = ({ state, dispatch }: MusicPlayerProps) => {
       {/* front of music player */}
       <div className='absolute w-full h-full backface-hidden p-4'>
         <p
-          className='font-semibold mb-4 hover:cursor-pointer'
+          className='font-semibold mb-4 hover:cursor-pointer w-fit'
           onClick={toggleFlip}
         >
           {currentTrack.title}
@@ -140,19 +137,19 @@ const MusicPlayer = ({ state, dispatch }: MusicPlayerProps) => {
         </div>
         <div className='flex items-center justify-around mt-8'>
           <Button
-            className='text-accent-foreground bg-accent'
+            className='text-accent-foreground bg-accent cursor-pointer'
             onClick={handlePrevTrack}
           >
             <Rewind />
           </Button>
           <Button
-            className='text-accent-foreground bg-accent'
+            className='text-accent-foreground bg-accent cursor-pointer'
             onClick={handlePlayPause}
           >
             {state.isPlaying ? <Pause /> : <Play />}
           </Button>
           <Button
-            className='text-accent-foreground bg-accent'
+            className='text-accent-foreground bg-accent cursor-pointer'
             onClick={handleNextTrack}
           >
             <FastForward />
@@ -160,11 +157,36 @@ const MusicPlayer = ({ state, dispatch }: MusicPlayerProps) => {
         </div>
       </div>
       {/* back of music player */}
-      <div className='bg-amber-200 absolute w-full h-full backface-hidden rotate-y-180'>
-        <p onClick={toggleFlip}>
-          Back of card that will show a list of all of the beats available to
-          play
-        </p>
+      <div className='absolute w-full h-full backface-hidden rotate-y-180 p-4 overflow-scroll'>
+        <div className='flex justify-between'>
+          <p className='text-2xl mb-4 font-extrabold uppercase'>Beats</p>
+          <Redo2
+            onClick={toggleFlip}
+            size={18}
+            className='cursor-pointer hover:scale-110 transition-transform duration-300 ease-in-out'
+          />
+        </div>
+        {playlist.map((track, index) => {
+          return (
+            <div
+              key={index}
+              className={`cursor-pointer my-2 p-2 border-b-2 flex items-center justify-center ${
+                currentTrack.title === track.title
+                  ? "bg-amber-100 font-bold text-shadow-2xs"
+                  : "font-light"
+              } hover:scale-105 transition-transform duration-300 ease-in-out`}
+            >
+              <p
+                onClick={() => {
+                  toggleFlip();
+                  dispatch({ type: "selectTrack", payload: { index } });
+                }}
+              >
+                {track.title}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

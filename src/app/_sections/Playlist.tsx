@@ -94,11 +94,12 @@ const Playlist = () => {
             email is <span>elliotchannah@outlook.com.</span>
           </p>
         </div>
-        <div className='my-auto mx-auto music-player'>
-          <MusicPlayer
-            state={state}
-            dispatch={dispatch}
-          />
+        <div className='my-auto mx-auto music-player flex flex-col items-center'>
+          <MusicPlayer />
+          <p className='text-sm text-center mt-8'>
+            Click on the <span className='font-bold'>title</span> to flip the
+            player to view my other beats.
+          </p>
         </div>
       </div>
     </section>
