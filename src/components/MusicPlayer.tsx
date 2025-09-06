@@ -7,7 +7,7 @@ import gsap from "gsap";
 import { usePlaylist } from "@/lib/context";
 import { Track } from "@/lib/types";
 
-//TODO: Note to self: figure out if i need to move the current track state logic out of playlist component and move it here so changing the track via the playlist can be done here. (think that makes sense, but need to think more)
+//TODO: add sample credit to mockplaylist and display it beneath song title in music player
 
 const MusicPlayer = () => {
   const { state, dispatch } = usePlaylist();
