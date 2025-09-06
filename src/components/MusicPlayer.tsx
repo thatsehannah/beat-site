@@ -10,25 +10,19 @@ import gsap from "gsap";
 //TODO: Note to self: figure out if i need to move the current track state logic out of playlist component and move it here so changing the track via the playlist can be done here. (think that makes sense, but need to think more)
 
 type MusicPlayerProps = {
-  track: Track;
-  playlistLength: number;
   state: State;
   dispatch: Dispatch<Action>;
 };
 
-const MusicPlayer = ({
-  track,
-  playlistLength,
-  state,
-  dispatch,
-}: MusicPlayerProps) => {
-  const { src, title } = track;
-
+const MusicPlayer = ({ state, dispatch }: MusicPlayerProps) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showPlaylist, setShowPlaylist] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  const playlist = state.playlist;
+  const currentTrack = playlist[state.currentIndex];
 
   const formatDuration = (input: number) => {
     const minutes = Math.floor(input / 60);
@@ -54,11 +48,11 @@ const MusicPlayer = ({
   };
 
   const handleNextTrack = () => {
-    dispatch({ type: "nextTrack", payload: { playlistLength } });
+    dispatch({ type: "nextTrack", payload: { playlist } });
   };
 
   const handlePrevTrack = () => {
-    dispatch({ type: "prevTrack" });
+    dispatch({ type: "prevTrack", payload: { playlist } });
   };
 
   const handlePlayPause = () => {
@@ -105,7 +99,7 @@ const MusicPlayer = ({
         audio.pause();
       }
     }
-  }, [track, state.isPlaying]);
+  }, [currentTrack, state.isPlaying]);
 
   //this useEffect
   useEffect(() => {
@@ -126,7 +120,7 @@ const MusicPlayer = ({
           className='font-semibold mb-4 hover:cursor-pointer'
           onClick={toggleFlip}
         >
-          {title}
+          {currentTrack.title}
         </p>
         <input
           type='range'
@@ -138,7 +132,7 @@ const MusicPlayer = ({
         />
         <audio
           ref={audioRef}
-          src={src}
+          src={currentTrack.src}
           preload='metadata'
         />
         <div className='flex items-center justify-between mt-2 text-sm'>

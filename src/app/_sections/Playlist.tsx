@@ -4,20 +4,17 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useGSAP } from "@gsap/react";
 import MusicPlayer from "@/components/MusicPlayer";
-import { Dispatch, useEffect, useRef, useState } from "react";
-import { Track } from "@/lib/types";
+import { Dispatch, useEffect, useRef } from "react";
 import { type Action, type State } from "@/lib/reducer";
 
 gsap.registerPlugin(ScrollTrigger);
 
 type PlaylistProps = {
-  playlist: Track[];
   state: State;
   dispatch: Dispatch<Action>;
 };
 
-const Playlist = ({ playlist, state, dispatch }: PlaylistProps) => {
-  const [currentTrack, setCurrentTrack] = useState<Track>(playlist[0]);
+const Playlist = ({ state, dispatch }: PlaylistProps) => {
   const bgVideoRef = useRef<HTMLVideoElement>(null);
 
   useGSAP(() => {
@@ -47,10 +44,6 @@ const Playlist = ({ playlist, state, dispatch }: PlaylistProps) => {
         { opacity: 1, duration: 1.2, ease: "power2.inOut" }
       );
   }, []);
-
-  useEffect(() => {
-    setCurrentTrack(playlist[state.currentIndex]);
-  }, [state.currentIndex, playlist]);
 
   const playAnimRef = useRef<gsap.core.Tween>(null);
 
@@ -82,7 +75,7 @@ const Playlist = ({ playlist, state, dispatch }: PlaylistProps) => {
     >
       <div className='w-full h-full absolute -z-10 brightness-[0.35] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-75% lg:mask-x-to-90% lg:mask-y-from-100% lg:mask-y-to-100% '>
         <video
-          src={playlist[state.currentIndex].video}
+          src={state.playlist[state.currentIndex].video}
           muted
           loop
           autoPlay
@@ -107,8 +100,6 @@ const Playlist = ({ playlist, state, dispatch }: PlaylistProps) => {
         </div>
         <div className='my-auto mx-auto music-player'>
           <MusicPlayer
-            track={currentTrack}
-            playlistLength={playlist.length}
             state={state}
             dispatch={dispatch}
           />

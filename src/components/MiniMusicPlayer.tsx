@@ -10,16 +10,11 @@ import { FastForward, Pause, Play, Rewind } from "lucide-react";
 gsap.registerPlugin(ScrollToPlugin);
 
 type MiniMusicPlayerProps = {
-  playlistLength: number;
   state: State;
   dispatch: Dispatch<Action>;
 };
 
-const MiniMusicPlayer = ({
-  playlistLength,
-  state,
-  dispatch,
-}: MiniMusicPlayerProps) => {
+const MiniMusicPlayer = ({ state, dispatch }: MiniMusicPlayerProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const handlePlayPause = () => {
@@ -31,11 +26,11 @@ const MiniMusicPlayer = ({
   };
 
   const handleNextTrack = () => {
-    dispatch({ type: "nextTrack", payload: { playlistLength } });
+    dispatch({ type: "nextTrack", payload: { playlist: state.playlist } });
   };
 
   const handlePrevTrack = () => {
-    dispatch({ type: "prevTrack" });
+    dispatch({ type: "prevTrack", payload: { playlist: state.playlist } });
   };
 
   useEffect(() => {

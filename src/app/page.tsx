@@ -11,22 +11,20 @@ const initialState: State = {
   isPlaying: false,
   seeked: false,
   currentIndex: 0,
+  playlist: mockPlaylist,
 };
 
 export default function Home() {
   const [state, dispatch] = useReducer(musicPlayerReducer, initialState);
-  const playlist = mockPlaylist;
 
   return (
     <main>
       <Hero />
       <Playlist
-        playlist={playlist}
         state={state}
         dispatch={dispatch}
       />
       <MiniMusicPlayer
-        playlistLength={playlist.length}
         state={state}
         dispatch={dispatch}
       />

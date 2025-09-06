@@ -1,15 +1,18 @@
+import { Track } from "./types";
+
 export type State = {
   isPlaying: boolean;
   seeked: boolean;
   currentIndex: number;
+  playlist: Track[];
 };
 
 export type Action =
   | { type: "play" }
   | { type: "pause" }
   | { type: "seeked" }
-  | { type: "nextTrack"; payload: { playlistLength: number } }
-  | { type: "prevTrack" }
+  | { type: "nextTrack"; payload: { playlist: Track[] } }
+  | { type: "prevTrack"; payload: { playlist: Track[] } }
   | { type: "reset" };
 
 export const musicPlayerReducer = (state: State, action: Action): State => {
@@ -33,7 +36,7 @@ export const musicPlayerReducer = (state: State, action: Action): State => {
       return {
         ...state,
         currentIndex:
-          state.currentIndex < action.payload.playlistLength - 1
+          state.currentIndex < action.payload.playlist.length - 1
             ? state.currentIndex + 1
             : 0,
       };
