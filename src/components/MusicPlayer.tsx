@@ -180,6 +180,7 @@ const MusicPlayer = () => {
                 onClick={() => {
                   toggleFlip();
                   dispatch({ type: "selectTrack", payload: { index } });
+                  dispatch({ type: "play" });
                 }}
               >
                 {track.title}
