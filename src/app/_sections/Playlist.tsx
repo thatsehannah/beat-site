@@ -4,17 +4,13 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useGSAP } from "@gsap/react";
 import MusicPlayer from "@/components/MusicPlayer";
-import { Dispatch, useEffect, useRef } from "react";
-import { type Action, type State } from "@/lib/reducer";
+import { useEffect, useRef } from "react";
+import { usePlaylist } from "@/lib/context";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type PlaylistProps = {
-  state: State;
-  dispatch: Dispatch<Action>;
-};
-
-const Playlist = ({ state, dispatch }: PlaylistProps) => {
+const Playlist = () => {
+  const { state, dispatch } = usePlaylist();
   const bgVideoRef = useRef<HTMLVideoElement>(null);
 
   useGSAP(() => {

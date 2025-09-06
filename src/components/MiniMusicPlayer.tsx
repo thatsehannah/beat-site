@@ -1,20 +1,17 @@
 "use client";
 
-import { Action, State } from "@/lib/reducer";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/all";
-import { Dispatch, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Rewind } from "lucide-react";
+import { usePlaylist } from "@/lib/context";
 
 gsap.registerPlugin(ScrollToPlugin);
 
-type MiniMusicPlayerProps = {
-  state: State;
-  dispatch: Dispatch<Action>;
-};
+const MiniMusicPlayer = () => {
+  const { state, dispatch } = usePlaylist();
 
-const MiniMusicPlayer = ({ state, dispatch }: MiniMusicPlayerProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const handlePlayPause = () => {

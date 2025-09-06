@@ -15,7 +15,7 @@ export type Action =
   | { type: "prevTrack"; payload: { playlist: Track[] } }
   | { type: "reset" };
 
-export const musicPlayerReducer = (state: State, action: Action): State => {
+export const playlistReducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "play":
       return {

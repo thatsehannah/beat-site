@@ -3,7 +3,6 @@
 import { ChangeEvent, Dispatch, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Rewind } from "lucide-react";
-import { Track } from "@/lib/types";
 import { Action, State } from "@/lib/reducer";
 import gsap from "gsap";
 
