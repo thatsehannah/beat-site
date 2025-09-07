@@ -67,7 +67,7 @@ const Playlist = () => {
   return (
     <section
       id='playlist'
-      className='disclaimer h-screen w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'
+      className='disclaimer md:h-auto lg:h-screen h-screen w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'
     >
       <div className='w-full h-full absolute -z-10 brightness-[0.35] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-75% lg:mask-x-to-90% lg:mask-y-from-100% lg:mask-y-to-100% '>
         <video
@@ -82,11 +82,11 @@ const Playlist = () => {
         <div className="absolute inset-0 bg-[url('/images/noise.png')] mix-blend-overlay pointer-events-none" />
       </div>
       <div className='h-full w-full rounded-2xl flex items-center flex-col z-30 overflow-hidden'>
-        <div className='disclaimer-text border-accent text-center lg:max-w-[50%] flex flex-col lg:items-center gap-5 p-6 lg:p-16'>
-          <p className='lg:text-7xl text-5xl uppercase font-black text-accent text-shadow-lg'>
+        <div className='disclaimer-text border-accent text-center xl:max-w-[50%] md:max-w-[80%] flex flex-col lg:items-center gap-5 p-6 lg:p-16'>
+          <p className='xl:text-7xl md:text-6xl text-5xl uppercase font-black text-accent text-shadow-lg'>
             Disclaimer!
           </p>
-          <p className='lg:text-lg text-[1rem] font-semibold text-left'>
+          <p className='md:text-lg text-[1rem] font-semibold text-left'>
             The samples I used have{" "}
             <span className='text-2xl font-extrabold'>NOT</span> been cleared. I
             am not looking to sell these beats; it is strictly for promotional
@@ -95,9 +95,9 @@ const Playlist = () => {
             email is <span>elliotchannah@outlook.com.</span>
           </p>
         </div>
-        <div className='my-auto mx-auto music-player flex flex-col items-center'>
+        <div className='music-player flex flex-col items-center my-16 lg:my-4'>
           <MusicPlayer />
-          <p className='text-sm text-center mt-8'>
+          <p className='text-sm text-center my-8'>
             Click on the <span className='font-bold'>title</span> to flip the
             player to view my other beats.
           </p>
