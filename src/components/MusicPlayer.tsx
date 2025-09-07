@@ -6,6 +6,7 @@ import { FastForward, Pause, Play, Redo2, Rewind } from "lucide-react";
 import gsap from "gsap";
 import { usePlaylist } from "@/lib/context";
 import { Track } from "@/lib/types";
+import Image from "next/image";
 
 //TODO: add sample credit to mockplaylist and display it beneath song title in music player
 
@@ -106,18 +107,36 @@ const MusicPlayer = () => {
 
   return (
     <div
-      className={`relative bg-background w-96 h-48 rounded-xl text-foreground shadow-2xl ${
+      className={`relative bg-background w-96 h-65 rounded-xl text-foreground shadow-2xl ${
         state.isPlaying ? "shadow-none" : "shadow-white"
       } ease-in-out duration-700 player-card perspective-distant transform-3d`}
     >
       {/* front of music player */}
       <div className='absolute w-full h-full backface-hidden p-4'>
         <p
-          className='font-semibold mb-4 hover:cursor-pointer w-fit'
+          className='font-semibold hover:cursor-pointer w-fit text-lg'
           onClick={toggleFlip}
         >
           {currentTrack.title}
         </p>
+        <div className='flex items-center gap-3 mt-2 mb-4 '>
+          <div className='w-8 h-8 relative'>
+            <Image
+              src={currentTrack.sampleCredit.albumCoverUrl}
+              fill
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+              alt='sampled song album cover'
+              quality={100}
+            />
+          </div>
+          <a
+            href={currentTrack.sampleCredit.spotifyUrl}
+            target='_blank'
+            className='italic text-sm'
+          >
+            {`'${currentTrack.sampleCredit.title}' by ${currentTrack.sampleCredit.artist}`}
+          </a>
+        </div>
         <input
           type='range'
           min={0}
