@@ -76,7 +76,8 @@ const Playlist = () => {
           loop
           autoPlay
           ref={bgVideoRef}
-          className='w-full h-full object-cover inset-0 '
+          className='w-full h-full object-cover inset-0'
+          playsInline
         />
         <div className="absolute inset-0 bg-[url('/images/noise.png')] mix-blend-overlay pointer-events-none" />
       </div>
