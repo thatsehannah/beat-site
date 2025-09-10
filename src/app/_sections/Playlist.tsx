@@ -13,50 +13,47 @@ gsap.registerPlugin(ScrollTrigger);
 const Playlist = () => {
   const { state, dispatch } = usePlaylist();
   const [loading, setLoading] = useState(true);
+  const [isVideoReady, setIsVideoReady] = useState(false);
   const bgVideoRef = useRef<HTMLVideoElement>(null);
 
   useGSAP(() => {
-    if (!loading) {
-      const disclaimerTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".disclaimer",
-          start: "top center",
-          end: "bottom center",
-        },
-      });
+    const disclaimerTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".disclaimer",
+        start: "top center",
+        end: "bottom center",
+      },
+    });
 
-      disclaimerTl
-        .fromTo(
-          ".disclaimer-text",
-          { opacity: 0 },
-          {
-            opacity: 1,
-            duration: 1.2,
-            ease: "power2.inOut",
-          }
-        )
-        .fromTo(
-          ".music-player",
-          {
-            opacity: 0,
-          },
-          { opacity: 1, duration: 1.2, ease: "power2.inOut" }
-        );
-    }
-  }, [loading]);
+    disclaimerTl
+      .fromTo(
+        ".disclaimer-text",
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 1.2,
+          ease: "power2.inOut",
+        }
+      )
+      .fromTo(
+        ".music-player",
+        {
+          opacity: 0,
+        },
+        { opacity: 1, duration: 1.2, ease: "power2.inOut" }
+      );
+  }, []);
 
   const playAnimRef = useRef<gsap.core.Tween>(null);
 
   useGSAP(() => {
-    if (!loading) {
-      playAnimRef.current = gsap.to(".vid-bg", {
-        opacity: 1,
-        duration: 1.2,
-        ease: "power2.inOut",
-        delay: 0.7,
-        paused: true,
-      });
-    }
+    playAnimRef.current = gsap.to(".vid-bg", {
+      opacity: 1,
+      duration: 1.2,
+      ease: "power2.inOut",
+      delay: 0.7,
+      paused: true,
+    });
   }, []);
 
   //fetching the tracks from firestore
@@ -81,21 +78,42 @@ const Playlist = () => {
     fetchTracks();
   }, [dispatch]);
 
+  useEffect(() => {
+    const bgVideo = bgVideoRef.current;
+    if (!bgVideo) {
+      return;
+    }
+
+    const handleVideoReady = () => {
+      setIsVideoReady(true);
+    };
+
+    bgVideo.addEventListener("canplaythrough", handleVideoReady);
+
+    return () => {
+      bgVideo.addEventListener("canplaythrough", handleVideoReady);
+    };
+  }, [state.playlist, state.currentIndex]);
+
   //controlling how the video animation starts and stops
   useEffect(() => {
+    if (!isVideoReady) {
+      return;
+    }
+
     if (state.seeked && state.isPlaying) {
       dispatch({ type: "reset" });
       playAnimRef.current?.restart(true); //play animation when song changes
     } else if (state.isPlaying) {
-      bgVideoRef.current?.play().then(() => playAnimRef.current?.play()); //play video first, then run animation
+      bgVideoRef.current?.play().then(() => playAnimRef.current?.play()); //when playing, play video first, then run animation
     } else {
-      playAnimRef.current?.reverse().then(() => bgVideoRef.current?.pause()); //reverse the animation, then pause the video
+      playAnimRef.current?.reverse().then(() => bgVideoRef.current?.pause()); //when pausing, reverse the animation, then pause the video
     }
-  }, [state.isPlaying, state.seeked, dispatch]);
+  }, [state.isPlaying, state.seeked, dispatch, isVideoReady]);
 
-  if (loading) {
-    return <p>Loading media...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading media...</p>;
+  // }
 
   return (
     <section
@@ -104,13 +122,13 @@ const Playlist = () => {
     >
       <div className='w-full h-full absolute -z-10 brightness-[0.35] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-75% lg:mask-x-to-90% lg:mask-y-from-100% lg:mask-y-to-100% '>
         <video
-          src={state.playlist[state.currentIndex].video}
+          src={state.playlist[state.currentIndex]?.video}
           muted
           loop
           autoPlay
           ref={bgVideoRef}
           className='w-full h-full object-cover inset-0'
-          playsInline
+          preload='metadata'
         />
         <div className="absolute inset-0 bg-[url('/images/noise.png')] mix-blend-overlay pointer-events-none" />
       </div>

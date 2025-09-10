@@ -21,9 +21,12 @@ export async function GET() {
 
     return NextResponse.json(tracks);
   } catch (error) {
-    error instanceof Error
-      ? console.log("Error fetching tracks", error.stack)
-      : console.log(error);
+    if (error instanceof Error) {
+      console.log("Error fetching tracks", error.stack);
+    } else {
+      console.log(error);
+    }
+
     return NextResponse.json(
       {
         error: "Failed to fetch track",

@@ -43,10 +43,12 @@ const MusicPlayer = () => {
   };
 
   const handleNextTrack = () => {
+    dispatch({ type: "seeked" });
     dispatch({ type: "nextTrack", payload: { playlist } });
   };
 
   const handlePrevTrack = () => {
+    dispatch({ type: "seeked" });
     dispatch({ type: "prevTrack", payload: { playlist } });
   };
 
