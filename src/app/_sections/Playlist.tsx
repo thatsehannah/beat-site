@@ -138,12 +138,15 @@ const Playlist = () => {
             Disclaimer!
           </p>
           <p className='md:text-lg text-[1rem] font-semibold text-left'>
-            The samples I used have{" "}
-            <span className='text-2xl font-extrabold'>NOT</span> been cleared. I
-            am not looking to sell these beats; it is strictly for promotional
-            purposes and to showcase my favorite hobby. If you like what you
-            hear and want to work with me, I&apos;d be happy to connect. My
-            email is <span>elliotchannah@outlook.com.</span>
+            The beats showcased here contain samples that have not been cleared.
+            These beats are shared for promotional and personal portfolio
+            purposes only and are not intended for sale, distribution, or
+            commerical use. If you enjoy the work and are interested in
+            collaborating (or would like for me to remove a beat from this
+            site), feel free to reach out{" "}
+            <a href='mailto:elliotchannah@outlook.com'>
+              elliotchannah@outlook.com
+            </a>
           </p>
         </div>
         <div className='music-player flex flex-col items-center my-16 lg:my-4'>
