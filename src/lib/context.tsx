@@ -5,7 +5,6 @@ import {
   useContext,
   useReducer,
 } from "react";
-import { mockPlaylist } from "./mockPlaylist";
 import { Action, playlistReducer, State } from "./reducer";
 
 type PlaylistContextType = {
@@ -21,7 +20,7 @@ const initialState: State = {
   isPlaying: false,
   seeked: false,
   currentIndex: 0,
-  playlist: mockPlaylist,
+  playlist: [],
 };
 
 export const PlaylistProvider = ({ children }: { children: ReactNode }) => {

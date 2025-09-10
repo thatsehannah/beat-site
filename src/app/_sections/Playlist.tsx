@@ -4,65 +4,98 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { useGSAP } from "@gsap/react";
 import MusicPlayer from "@/components/MusicPlayer";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePlaylist } from "@/lib/context";
+import { getAllTracks } from "@/lib/playlistService";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Playlist = () => {
   const { state, dispatch } = usePlaylist();
+  const [loading, setLoading] = useState(true);
   const bgVideoRef = useRef<HTMLVideoElement>(null);
 
   useGSAP(() => {
-    const disclaimerTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: ".disclaimer",
-        start: "top center",
-        end: "bottom center",
-      },
-    });
-
-    disclaimerTl
-      .fromTo(
-        ".disclaimer-text",
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 1.2,
-          ease: "power2.inOut",
-        }
-      )
-      .fromTo(
-        ".music-player",
-        {
-          opacity: 0,
+    if (!loading) {
+      const disclaimerTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".disclaimer",
+          start: "top center",
+          end: "bottom center",
         },
-        { opacity: 1, duration: 1.2, ease: "power2.inOut" }
-      );
-  }, []);
+      });
+
+      disclaimerTl
+        .fromTo(
+          ".disclaimer-text",
+          { opacity: 0 },
+          {
+            opacity: 1,
+            duration: 1.2,
+            ease: "power2.inOut",
+          }
+        )
+        .fromTo(
+          ".music-player",
+          {
+            opacity: 0,
+          },
+          { opacity: 1, duration: 1.2, ease: "power2.inOut" }
+        );
+    }
+  }, [loading]);
 
   const playAnimRef = useRef<gsap.core.Tween>(null);
 
   useGSAP(() => {
-    playAnimRef.current = gsap.to(".vid-bg", {
-      opacity: 1,
-      duration: 1.2,
-      ease: "power2.inOut",
-      delay: 0.7,
-      paused: true,
-    });
+    if (!loading) {
+      playAnimRef.current = gsap.to(".vid-bg", {
+        opacity: 1,
+        duration: 1.2,
+        ease: "power2.inOut",
+        delay: 0.7,
+        paused: true,
+      });
+    }
   }, []);
 
+  //fetching the tracks from firestore
+  useEffect(() => {
+    const fetchTracks = async () => {
+      setLoading(true);
+
+      try {
+        const response = await getAllTracks();
+
+        if (response.length > 0) {
+          console.log("setting playlist...");
+          dispatch({ type: "setPlaylist", payload: { playlist: response } });
+          setLoading(false);
+        }
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+      }
+    };
+
+    fetchTracks();
+  }, [dispatch]);
+
+  //controlling how the video animation starts and stops
   useEffect(() => {
     if (state.seeked && state.isPlaying) {
       dispatch({ type: "reset" });
-      playAnimRef.current?.restart(true);
+      playAnimRef.current?.restart(true); //play animation when song changes
     } else if (state.isPlaying) {
-      bgVideoRef.current?.play().then(() => playAnimRef.current?.play());
+      bgVideoRef.current?.play().then(() => playAnimRef.current?.play()); //play video first, then run animation
     } else {
-      playAnimRef.current?.reverse().then(() => bgVideoRef.current?.pause());
+      playAnimRef.current?.reverse().then(() => bgVideoRef.current?.pause()); //reverse the animation, then pause the video
     }
   }, [state.isPlaying, state.seeked, dispatch]);
+
+  if (loading) {
+    return <p>Loading media...</p>;
+  }
 
   return (
     <section
@@ -96,7 +129,7 @@ const Playlist = () => {
           </p>
         </div>
         <div className='music-player flex flex-col items-center my-16 lg:my-4'>
-          <MusicPlayer />
+          {loading ? <p>Loading media...</p> : <MusicPlayer />}
           <p className='text-sm text-center my-8'>
             Click on the <span className='font-bold'>title</span> to flip the
             player to view my other beats.

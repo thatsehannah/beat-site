@@ -11,6 +11,7 @@ gsap.registerPlugin(ScrollToPlugin);
 
 const MiniMusicPlayer = () => {
   const { state, dispatch } = usePlaylist();
+  const [loading, setLoading] = useState(true);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -43,6 +44,16 @@ const MiniMusicPlayer = () => {
 
     return () => window.removeEventListener("scroll", handleScroll);
   });
+
+  useEffect(() => {
+    if (state.playlist.length) {
+      setLoading(false);
+    }
+  }, [state.playlist]);
+
+  if (loading) {
+    return;
+  }
 
   return (
     <div

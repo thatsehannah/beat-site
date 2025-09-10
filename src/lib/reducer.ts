@@ -11,6 +11,7 @@ export type Action =
   | { type: "play" }
   | { type: "pause" }
   | { type: "seeked" }
+  | { type: "setPlaylist"; payload: { playlist: Track[] } }
   | { type: "selectTrack"; payload: { index: number } }
   | { type: "nextTrack"; payload: { playlist: Track[] } }
   | { type: "prevTrack"; payload: { playlist: Track[] } }
@@ -57,6 +58,11 @@ export const playlistReducer = (state: State, action: Action): State => {
       return {
         ...state,
         seeked: false,
+      };
+    case "setPlaylist":
+      return {
+        ...state,
+        playlist: action.payload.playlist,
       };
     default:
       throw new Error("Unknown action");

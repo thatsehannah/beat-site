@@ -8,8 +8,6 @@ import { usePlaylist } from "@/lib/context";
 import { Track } from "@/lib/types";
 import Image from "next/image";
 
-//TODO: add sample credit to mockplaylist and display it beneath song title in music player
-
 const MusicPlayer = () => {
   const { state, dispatch } = usePlaylist();
   const [currentTime, setCurrentTime] = useState(0);
@@ -120,7 +118,7 @@ const MusicPlayer = () => {
           {currentTrack.title}
         </p>
         <div className='flex items-center gap-3 mt-2 mb-4 '>
-          <div className='w-8 h-8 relative'>
+          {/* <div className='w-8 h-8 relative'>
             <Image
               src={currentTrack.sampleCredit.albumCoverUrl}
               fill
@@ -128,7 +126,7 @@ const MusicPlayer = () => {
               alt='sampled song album cover'
               quality={100}
             />
-          </div>
+          </div> */}
           <a
             href={currentTrack.sampleCredit.spotifyUrl}
             target='_blank'
