@@ -131,7 +131,7 @@ const Playlist = () => {
         <div className="absolute inset-0 bg-[url('/images/noise.png')] mix-blend-overlay pointer-events-none" />
       </div>
       <div className='h-full w-full rounded-2xl flex items-center flex-col z-30 overflow-hidden'>
-        <div className='disclaimer-text border-accent text-center xl:max-w-[50%] md:max-w-[80%] flex flex-col lg:items-center gap-5 p-6 lg:p-16'>
+        <div className='disclaimer-text border-accent text-center xl:max-w-[50%] md:max-w-[80%] flex flex-col lg:items-center gap-5 p-6 lg:p-10 2xl:p-16'>
           <p className='xl:text-7xl md:text-6xl text-5xl uppercase font-black text-accent text-shadow-lg'>
             Disclaimer!
           </p>
