@@ -64,11 +64,9 @@ const Playlist = () => {
       try {
         const response = await getAllTracks();
 
-        if (response.length > 0) {
-          console.log("setting playlist...");
-          dispatch({ type: "setPlaylist", payload: { playlist: response } });
-          setLoading(false);
-        }
+        console.log("setting playlist...");
+        dispatch({ type: "setPlaylist", payload: { playlist: response } });
+        setLoading(false);
       } catch (error) {
         setLoading(false);
         console.log(error);

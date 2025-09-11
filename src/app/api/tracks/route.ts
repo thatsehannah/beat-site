@@ -15,7 +15,7 @@ export async function GET() {
         title: data.title,
         src: data.src,
         video: data.video,
-        sampleCredit: data.sampleCredit,
+        sampleSpotifyId: data.sampleSpotifyId,
       });
     });
 

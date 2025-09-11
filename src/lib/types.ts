@@ -3,10 +3,12 @@ export type Track = {
   src: string;
   title: string;
   video: string;
-  sampleCredit: {
-    spotifyUrl: string;
-    title: string;
-    artist: string;
-    albumCoverUrl: string;
-  };
+  sampleSpotifyId: string;
+};
+
+export type SpotifyTrack = {
+  artist: string;
+  albumCoverUrl: string;
+  trackUri: string;
+  name: string;
 };

@@ -5,13 +5,20 @@ import { Button } from "./ui/button";
 import { FastForward, Pause, Play, Redo2, Rewind } from "lucide-react";
 import gsap from "gsap";
 import { usePlaylist } from "@/lib/context";
-import { Track } from "@/lib/types";
+import { SpotifyTrack, Track } from "@/lib/types";
 import Image from "next/image";
+import { getSpotifyTrack } from "@/lib/playlistService";
 
 const MusicPlayer = () => {
   const { state, dispatch } = usePlaylist();
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [sampleSpotifyData, setSampleSpotifyData] = useState<SpotifyTrack>({
+    name: "",
+    trackUri: "",
+    albumCoverUrl: "",
+    artist: "",
+  });
   const [showPlaylist, setShowPlaylist] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -72,6 +79,22 @@ const MusicPlayer = () => {
     });
   };
 
+  //getting sample data
+  useEffect(() => {
+    if (currentTrack) {
+      const fetchSample = async () => {
+        try {
+          const response = await getSpotifyTrack(currentTrack.sampleSpotifyId);
+          setSampleSpotifyData(response);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchSample();
+    }
+  }, [currentTrack]);
+
   //this useEffect will listen for 'timeupdate' events
   useEffect(() => {
     const audio = audioRef.current;
@@ -119,24 +142,28 @@ const MusicPlayer = () => {
         >
           {currentTrack.title}
         </p>
-        <div className='flex items-center gap-3 mt-2 mb-4 '>
-          {/* <div className='w-8 h-8 relative'>
-            <Image
-              src={currentTrack.sampleCredit.albumCoverUrl}
-              fill
-              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-              alt='sampled song album cover'
-              quality={100}
-            />
-          </div> */}
-          <a
-            href={currentTrack.sampleCredit.spotifyUrl}
-            target='_blank'
-            className='italic text-sm'
-          >
-            {`'${currentTrack.sampleCredit.title}' by ${currentTrack.sampleCredit.artist}`}
-          </a>
-        </div>
+
+        {sampleSpotifyData.artist !== "" && (
+          <div className='flex items-center gap-3 mt-2 mb-4 '>
+            <div className='w-8 h-8 relative'>
+              <Image
+                src={sampleSpotifyData?.albumCoverUrl}
+                fill
+                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                alt='sampled song album cover'
+                quality={100}
+              />
+            </div>
+            <a
+              href={sampleSpotifyData!.trackUri}
+              target='_blank'
+              className='italic text-sm'
+            >
+              {`'${sampleSpotifyData.name}' by ${sampleSpotifyData.artist}`}
+            </a>
+          </div>
+        )}
+
         <input
           type='range'
           min={0}
