@@ -128,6 +128,15 @@ const MusicPlayer = () => {
     }
   }, [currentTime, duration, dispatch]);
 
+  useEffect(() => {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.setActionHandler("play", handlePlayPause);
+      navigator.mediaSession.setActionHandler("pause", handlePlayPause);
+      navigator.mediaSession.setActionHandler("nexttrack", handleNextTrack);
+      navigator.mediaSession.setActionHandler("previoustrack", handlePrevTrack);
+    }
+  });
+
   return (
     <div
       className={`relative bg-background md:w-96 w-76 h-65 rounded-xl text-foreground shadow-2xl ${

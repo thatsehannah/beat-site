@@ -1,7 +1,10 @@
 import { SpotifyTrack } from "@/lib/types";
 import { NextResponse } from "next/server";
 
-export const GET = async ({ params }: { params: { id: string } }) => {
+export const GET = async (
+  _: Request,
+  { params }: { params: { id: string } }
+) => {
   const { id } = await params;
 
   const clientId = process.env.SPOTIFY_CLIENT_ID;
