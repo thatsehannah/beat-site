@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollToPlugin, ScrollTrigger } from "gsap/all";
 import { Button } from "../../components/ui/button";
 import { useMediaQuery } from "react-responsive";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -39,7 +40,7 @@ const Hero = () => {
         duration: 8,
         ease: "power1.inOut",
       })
-      .to(".title", {
+      .to(".logo", {
         opacity: 1,
         duration: 2.2,
         ease: "power1.inOut",
@@ -83,16 +84,25 @@ const Hero = () => {
         preload='metadata'
         playsInline
       />
-      <div className='absolute z-50 xl:top-[20%] bottom-[14%] xl:left-36 w-full xl:w-auto'>
-        <p className='title xl:text-6xl md:text-5xl text-4xl font-black opacity-0 uppercase text-center xl:text-left'>
+      <div className='absolute z-50 xl:top-[6%] bottom-[14%] xl:left-76 w-full xl:w-auto flex flex-col justify-center'>
+        {/* <p className='title xl:text-6xl md:text-5xl text-4xl font-black opacity-0 uppercase text-center xl:text-left'>
           That&apos;s E. Hannah
-        </p>
-        <p className='subtitle text-center xl:text-left md:text-xl text-lg mt-3 font-light opacity-0 uppercase'>
+        </p> */}
+        <div className='relative w-[40rem] h-[14rem] opacity-0 logo'>
+          <Image
+            src='/images/logo.png'
+            alt='beats by e. hannah logo'
+            fill
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            quality={100}
+          />
+        </div>
+        <p className='subtitle text-center md:text-xl text-lg mt-4 font-light opacity-0 uppercase'>
           Beat-making Hobbyist
         </p>
         <div className='call-to-action flex justify-center items-center xl:mt-20 mt-13 opacity-0'>
           <Button
-            className='xl:p-8 p-6 cursor-pointer hover:scale-110 ease-in-out transition-all duration-500'
+            className='xl:p-8 p-6 cursor-pointer hover:scale-110 hover:shadow-lg ease-in-out transition-all duration-500'
             size='lg'
             onClick={scrollToPlaylist}
           >

@@ -9,6 +9,8 @@ import { SpotifyTrack, Track } from "@/lib/types";
 import Image from "next/image";
 import { getSpotifyTrack } from "@/lib/playlistService";
 
+//TODO: add like and dislike buttons to media player for each beat
+
 const MusicPlayer = () => {
   const { state, dispatch } = usePlaylist();
   const [currentTime, setCurrentTime] = useState(0);
