@@ -8,6 +8,7 @@ import { Button } from "../../components/ui/button";
 import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
 import { Vault } from "lucide-react";
+import Logo from "../../../public/images/new-beats-logo.svg";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -16,10 +17,10 @@ const Hero = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ maxWidth: 1024 });
 
-  const maskSize = isMobile ? "80%" : isTablet ? "60%" : "32%";
+  const maskSize = isMobile ? "36%" : isTablet ? "43%" : "32%";
 
   //First value: horizontal position. Second value: vertical position
-  const maskPosition = isMobile ? "50% 8%" : isTablet ? "56% 10%" : "95% 50%";
+  const maskPosition = "97% 50%";
 
   useGSAP(() => {
     const maskTimeLine = gsap.timeline({
@@ -29,7 +30,6 @@ const Hero = () => {
         end: "bottom center",
         scrub: 1,
         pin: true,
-        pinSpacing: true,
       },
     });
 
@@ -92,38 +92,30 @@ const Hero = () => {
         preload='metadata'
         playsInline
       />
-      <div className='absolute z-50 xl:top-[6%] bottom-[14%] xl:left-76 w-full xl:w-auto flex flex-col justify-center items-center'>
-        {/* <p className='title xl:text-6xl md:text-5xl text-4xl font-black opacity-0 uppercase text-center xl:text-left'>
-          That&apos;s E. Hannah
-        </p> */}
-        <div className='relative xl:w-[32rem] md:w-[21rem] w-[16rem] xl:h-[14rem] md:h-[9rem] h-[7rem] opacity-0 logo'>
-          <Image
-            src='/images/logo.png'
-            alt='beats by e. hannah logo'
-            fill
-            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-            quality={100}
-          />
+      <div className='absolute z-50 xl:top-[6%] lg:top-[20%] lg:bottom-[14%] md:bottom-[32%] bottom-[36%] 2xl:left-[24rem] xl:left-[18rem] lg:left-40 md:left-18 left-[7%] w-auto flex flex-col justify-center items-center'>
+        <div className='relative opacity-0 logo'>
+          <Logo className='lg:h-100 md:h-70 h-42 w-auto fill-accent' />
         </div>
-        <p className='subtitle text-center md:text-xl text-lg mt-4 font-light opacity-0 uppercase'>
-          Sample-chopping Hobbyist
-        </p>
-        <div className='call-to-action flex justify-center items-center xl:mt-20 mt-13 opacity-0'>
-          <Button
-            className='xl:p-8 p-6 cursor-pointer hover:scale-110 hover:shadow-lg ease-in-out transition-all duration-500 flex gap-2 items-center justify-center'
-            size='lg'
-            onClick={() => {
-              scrollToPlaylist();
-              spinVault();
-            }}
-          >
-            <div className='flex justify-center items-baseline gap-4'>
-              <p className='xl:text-xl text-lg font-bold uppercase'>
-                open the vault
-              </p>
-              <Vault className='vault xl:scale-200 scale-150' />
-            </div>
-          </Button>
+        <div className='flex flex-col md:gap-8 gap-3 mt-7'>
+          <p className='subtitle md:text-center lg:text-2xl md:text-lg text-sm font-light uppercase opacity-0'>
+            Sample-chopping Hobbyist
+          </p>
+          <div className='call-to-action flex justify-center items-center opacity-0'>
+            <Button
+              className='md:p-8 p-6 cursor-pointer hover:scale-110 hover:shadow-lg ease-in-out transition-all duration-500 flex gap-2 items-center justify-center'
+              onClick={() => {
+                scrollToPlaylist();
+                spinVault();
+              }}
+            >
+              <div className='flex justify-center items-center md:gap-4 gap-3'>
+                <p className='md:text-xl text-sm font-bold uppercase'>
+                  open the vault
+                </p>
+                <Vault className='vault md:scale-200 scale-150' />
+              </div>
+            </Button>
+          </div>
         </div>
       </div>
     </section>
