@@ -116,7 +116,7 @@ const Playlist = () => {
   return (
     <section
       id='playlist'
-      className='disclaimer lg:sm:h-screen lg:sm:w-screen md:h-auto md:w-auto bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'
+      className='disclaimer h-screen w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'
     >
       <div className='w-full h-full absolute -z-10 lg:brightness-[0.35] brightness-[0.45] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-75% lg:mask-x-to-90% lg:mask-y-from-100% lg:mask-y-to-100% '>
         <video
@@ -131,7 +131,7 @@ const Playlist = () => {
         />
         <div className="absolute inset-0 bg-[url('/images/noise.png')] mix-blend-overlay pointer-events-none" />
       </div>
-      <div className='h-full w-full rounded-2xl flex items-center flex-col z-30 overflow-hidden'>
+      <div className='h-full w-full rounded-2xl flex items-center justify-around flex-col z-30 overflow-hidden'>
         <div className='disclaimer-text border-accent text-center xl:max-w-[50%] md:max-w-[80%] flex flex-col lg:items-center gap-5 p-6 lg:p-10 2xl:p-16'>
           <p className='xl:text-7xl md:text-6xl text-5xl uppercase font-black text-accent text-shadow-lg'>
             Disclaimer!

@@ -6,7 +6,6 @@ import { useGSAP } from "@gsap/react";
 import { ScrollToPlugin, ScrollTrigger } from "gsap/all";
 import { Button } from "../../components/ui/button";
 import { useMediaQuery } from "react-responsive";
-import Image from "next/image";
 import { Vault } from "lucide-react";
 import Logo from "../../../public/images/new-beats-logo.svg";
 
