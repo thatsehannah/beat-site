@@ -136,7 +136,7 @@ const Playlist = () => {
           <p className='xl:text-7xl md:text-6xl text-5xl uppercase font-black text-accent text-shadow-lg'>
             Disclaimer!
           </p>
-          <p className='md:text-xl text-lg font-semibold text-left'>
+          <p className='md:text-xl text-[1rem] font-semibold text-left'>
             The beats showcased here contain samples that have not been cleared.
             These beats are shared for promotional and personal portfolio
             purposes only and are not intended for sale, distribution, or
@@ -154,7 +154,7 @@ const Playlist = () => {
         </div>
         <div className='music-player flex flex-col items-center my-16 lg:my-4'>
           {loading ? <p>Loading media...</p> : <MusicPlayer />}
-          <p className='md:text-lg text-sm text-center my-12'>
+          <p className='md:text-[1rem] text-sm text-center md:my-12 my-8'>
             Click on the <span className='font-bold'>title</span> to flip the
             player to view my other beats.
           </p>

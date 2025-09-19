@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollToPlugin, ScrollTrigger } from "gsap/all";
@@ -90,6 +90,7 @@ const Hero = () => {
         className='h-full w-full object-cover z-10 brightness-50 masked-img'
         preload='metadata'
         playsInline
+        webkit-playsinline='true'
       />
       <div className='absolute z-50 xl:top-[6%] lg:top-[20%] lg:bottom-[14%] md:bottom-[32%] bottom-[36%] 2xl:left-[24rem] xl:left-[18rem] lg:left-40 md:left-18 left-[7%] w-auto flex flex-col justify-center items-center'>
         <div className='relative opacity-0 logo'>
