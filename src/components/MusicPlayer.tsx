@@ -9,6 +9,7 @@ import { SpotifyTrack, Track } from "@/lib/types";
 import Image from "next/image";
 import { getSpotifyTrack } from "@/lib/playlistService";
 
+//TODO: keep track of number of plays for each beat
 //TODO: add like and dislike buttons to media player for each beat
 
 const MusicPlayer = () => {

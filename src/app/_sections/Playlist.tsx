@@ -159,6 +159,23 @@ const Playlist = () => {
             player to view my other beats.
           </p>
         </div>
+        {/* This is the footer so it can blend in with video backgrounds */}
+        <div className='text-center p-4'>
+          <p className='text-white text-xs mb-1'>
+            &copy; - {new Date().getFullYear()}
+            {" - "}
+            <a
+              href='https://thatsehannah.com'
+              target='_blank'
+              className='underline'
+            >
+              TECH3
+            </a>
+          </p>
+          <p className='text-xs text-primary-foreground italic'>
+            For listening/demo purposes only.
+          </p>
+        </div>
       </div>
     </section>
   );
