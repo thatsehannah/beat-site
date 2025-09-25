@@ -116,7 +116,7 @@ const Playlist = () => {
   return (
     <section
       id='playlist'
-      className='disclaimer h-screen w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'
+      className='disclaimer h-full w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'
     >
       <div className='w-full h-full absolute -z-10 lg:brightness-[0.35] brightness-[0.45] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-75% lg:mask-x-to-90% lg:mask-y-from-100% lg:mask-y-to-100% '>
         <video
@@ -152,15 +152,14 @@ const Playlist = () => {
             .
           </p>
         </div>
-        <div className='music-player flex flex-col items-center my-16 lg:my-4'>
+        <div className='music-player flex flex-col items-center mt-16 lg:my-4'>
           {loading ? <p>Loading media...</p> : <MusicPlayer />}
           <p className='md:text-[1rem] text-sm text-center md:my-12 my-8'>
             Click on the <span className='font-bold'>title</span> to flip the
             player to view my other beats.
           </p>
         </div>
-        {/* This is the footer so it can blend in with video backgrounds */}
-        <div className='text-center p-4'>
+        <footer className='text-center p-4'>
           <p className='text-white text-xs mb-1'>
             &copy; - {new Date().getFullYear()}
             {" - "}
@@ -175,7 +174,7 @@ const Playlist = () => {
           <p className='text-xs text-primary-foreground italic'>
             For listening/demo purposes only.
           </p>
-        </div>
+        </footer>
       </div>
     </section>
   );

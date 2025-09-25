@@ -84,7 +84,7 @@ const MusicPlayer = () => {
 
   //getting sample data
   useEffect(() => {
-    if (currentTrack) {
+    if (currentTrack && currentTrack.sampleSpotifyId !== "undefined") {
       const fetchSample = async () => {
         try {
           const response = await getSpotifyTrack(currentTrack.sampleSpotifyId);
@@ -131,6 +131,7 @@ const MusicPlayer = () => {
     }
   }, [currentTime, duration, dispatch]);
 
+  //this useEffect is for controlling the music with buttons (headphones, keyboard, etc.)
   useEffect(() => {
     if ("mediaSession" in navigator) {
       navigator.mediaSession.setActionHandler("play", handlePlayPause);
