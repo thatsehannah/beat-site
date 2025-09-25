@@ -143,8 +143,10 @@ const MusicPlayer = () => {
 
   return (
     <div
-      className={`relative bg-background md:w-96 w-76 h-65 rounded-xl text-foreground shadow-2xl ${
-        state.isPlaying ? "shadow-none" : "shadow-white"
+      className={`relative md:w-96 w-76 h-65 rounded-xl text-foreground shadow-2xl ${
+        state.isPlaying
+          ? "shadow-none bg-background/50"
+          : "shadow-white bg-background"
       } ease-in-out duration-700 player-card perspective-distant transform-3d`}
     >
       {/* front of music player */}

@@ -118,7 +118,7 @@ const Playlist = () => {
       id='playlist'
       className='disclaimer h-full w-screen bg-primary bg-[url("/images/noise.png")] size-full text-accent-foreground z-20 relative'
     >
-      <div className='w-full h-full absolute -z-10 lg:brightness-[0.35] brightness-[0.45] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-75% lg:mask-x-to-90% lg:mask-y-from-100% lg:mask-y-to-100% '>
+      <div className='w-full h-full absolute -z-10 lg:brightness-[0.40] brightness-[0.45] vid-bg opacity-0 mask-y-from-75% mask-y-to-90% lg:mask-x-from-75% lg:mask-x-to-90% lg:mask-y-from-100% lg:mask-y-to-100% '>
         <video
           src={state.playlist[state.currentIndex]?.video}
           muted
@@ -140,9 +140,10 @@ const Playlist = () => {
             The beats showcased here contain samples that have not been cleared.
             These beats are shared for promotional and personal portfolio
             purposes only and are not intended for sale, distribution, or
-            commerical use. If you enjoy the work and are interested in
-            collaborating (or would like for me to remove a beat from this
-            site), feel free to reach out to me via{" "}
+            commerical use. I do not own the copyrights to the samples. If you
+            enjoy the work and are interested in collaborating (or would like
+            for me to remove a beat from this site), feel free to reach out to
+            me via{" "}
             <a
               className='underline'
               href='mailto:elliotchannah@outlook.com'
