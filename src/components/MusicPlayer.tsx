@@ -156,7 +156,7 @@ const MusicPlayer = () => {
           {currentTrack.title}
         </p>
 
-        {sampleSpotifyData.artist !== "" && (
+        {currentTrack.sampleSpotifyId !== "undefined" && (
           <div className='flex items-center gap-3 mt-2 mb-4 '>
             <div className='w-8 h-8 relative'>
               <Image
