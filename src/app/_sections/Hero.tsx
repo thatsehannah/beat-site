@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollToPlugin, ScrollTrigger } from "gsap/all";
 import { Button } from "../../components/ui/button";
 import { useMediaQuery } from "react-responsive";
-import { Vault } from "lucide-react";
+import { ChevronDown, Vault } from "lucide-react";
 import Logo from "../../../public/images/new-beats-logo.svg";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -33,6 +33,11 @@ const Hero = () => {
     });
 
     maskTimeLine
+      .to(".hero-instructions", {
+        opacity: 0,
+        duration: 1.5,
+        ease: "power2.inOut",
+      })
       .to(bgVideoRef.current, {
         scale: 1,
         maskSize: maskSize,
@@ -92,6 +97,10 @@ const Hero = () => {
         playsInline
         webkit-playsinline='true'
       />
+      <div className='z-50 absolute top-10 w-full flex flex-col justify-center items-center gap-1 text-white hero-instructions'>
+        <p>Scroll Down To Continue</p>
+        <ChevronDown className='animate-pulse' />
+      </div>
       <div className='absolute z-50 xl:top-[6%] lg:top-[20%] lg:bottom-[14%] md:bottom-[32%] bottom-[36%] 2xl:left-[24rem] xl:left-[18rem] lg:left-40 md:left-18 left-[7%] w-auto flex flex-col justify-center items-center'>
         <div className='relative opacity-0 logo'>
           <Logo className='lg:h-100 md:h-70 h-42 w-auto fill-accent' />
