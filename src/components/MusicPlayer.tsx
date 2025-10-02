@@ -127,13 +127,18 @@ const MusicPlayer = () => {
   //this useEffect pauses the beat when the song ends
   useEffect(() => {
     if (currentTime === duration) {
-      dispatch({ type: "pause" });
+      // dispatch({ type: "pause" });
+      dispatch({ type: "seeked" });
+      dispatch({ type: "nextTrack", payload: { playlist } });
     }
-  }, [currentTime, duration, dispatch]);
+  }, [currentTime, duration, dispatch, playlist]);
 
-  //this useEffect is for controlling the music with buttons (headphones, keyboard, etc.)
+  //this useEffect is for setting the metadata and various device controls (headphones, keyboard, etc.) for the beats
   useEffect(() => {
     if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: `${currentTrack.title} • Beats By E. Hannah`,
+      });
       navigator.mediaSession.setActionHandler("play", handlePlayPause);
       navigator.mediaSession.setActionHandler("pause", handlePlayPause);
       navigator.mediaSession.setActionHandler("nexttrack", handleNextTrack);
@@ -158,7 +163,7 @@ const MusicPlayer = () => {
           {currentTrack.title}
         </p>
 
-        {currentTrack.sampleSpotifyId !== "undefined" && (
+        {currentTrack.sampleSpotifyId !== "undefined" ? (
           <div className='flex items-center gap-3 mt-2 mb-4 '>
             <div className='w-8 h-8 relative'>
               <Image
@@ -176,6 +181,12 @@ const MusicPlayer = () => {
             >
               {`'${sampleSpotifyData.name}' by ${sampleSpotifyData.artist}`}
             </a>
+          </div>
+        ) : (
+          <div className='mt-2 mb-4'>
+            <p className='italic text-sm'>
+              No identifiable sample information for this beat.
+            </p>
           </div>
         )}
 
