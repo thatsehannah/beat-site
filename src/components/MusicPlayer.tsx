@@ -124,14 +124,16 @@ const MusicPlayer = () => {
     }
   }, [currentTrack, state.isPlaying]);
 
-  //this useEffect pauses the beat when the song ends
+  //this useEffect plays the next beat when the current beat ends
   useEffect(() => {
-    if (currentTime === duration) {
-      // dispatch({ type: "pause" });
-      dispatch({ type: "seeked" });
-      dispatch({ type: "nextTrack", payload: { playlist } });
+    const audio = audioRef.current;
+
+    if (audio) {
+      if (audio.ended) {
+        dispatch({ type: "nextTrack", payload: { playlist } });
+      }
     }
-  }, [currentTime, duration, dispatch, playlist]);
+  }, [dispatch, playlist, audioRef.current?.ended]);
 
   //this useEffect is for setting the metadata and various device controls (headphones, keyboard, etc.) for the beats
   useEffect(() => {
