@@ -140,6 +140,7 @@ const MusicPlayer = () => {
     if ("mediaSession" in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
         title: `${currentTrack.title} • Beats By E. Hannah`,
+        artwork: [{ src: "/images/new-beats-logo.png" }],
       });
       navigator.mediaSession.setActionHandler("play", handlePlayPause);
       navigator.mediaSession.setActionHandler("pause", handlePlayPause);
